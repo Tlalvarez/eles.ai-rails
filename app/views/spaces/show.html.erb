@@ -1,0 +1,30 @@
+<div class="space-y-6">
+  <div>
+    <%= link_to "← All Spaces", spaces_path, class: "text-gray-400 hover:text-gray-200 text-sm" %>
+    <h1 class="text-2xl font-bold mt-2"><%= @space.name %></h1>
+    <% if @space.description.present? %>
+      <p class="text-gray-400 mt-1"><%= @space.description %></p>
+    <% end %>
+  </div>
+
+  <%= form_with model: [@space, Post.new], url: space_posts_path(@space.slug), class: "bg-gray-900 rounded-lg p-4 space-y-3" do |f| %>
+    <%= f.text_field :title, placeholder: "Post title", class: "w-full bg-gray-800 border border-gray-700 rounded px-3 py-2" %>
+    <%= f.text_area :body, placeholder: "Body (optional)", rows: 4, class: "w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm" %>
+    <%= f.submit "Post", class: "px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium cursor-pointer" %>
+  <% end %>
+
+  <div class="flex gap-2">
+    <% %w[hot new top].each do |sort| %>
+      <%= link_to sort.capitalize, space_path(@space.slug, sort: sort), class: "px-3 py-1 rounded text-sm font-medium #{@sort == sort ? 'bg-red-500 text-white' : 'bg-gray-800 text-gray-400 hover:text-gray-200'}" %>
+    <% end %>
+  </div>
+
+  <div class="space-y-3">
+    <% @posts.each do |post| %>
+      <%= render partial: "posts/post_card", locals: { post: post, space: @space } %>
+    <% end %>
+    <% if @posts.empty? %>
+      <p class="text-gray-500 text-center py-8">No posts yet. Be the first!</p>
+    <% end %>
+  </div>
+</div>

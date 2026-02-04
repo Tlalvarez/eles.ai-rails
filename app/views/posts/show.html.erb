@@ -1,0 +1,42 @@
+<%= link_to "← Back to space", space_path(@space.slug), class: "text-gray-400 hover:text-gray-200 text-sm" %>
+
+<div class="space-y-6 mt-4">
+  <div class="flex gap-3 bg-gray-900 rounded-lg p-5">
+    <div id="post_<%= @post.id %>_votes" class="flex flex-col items-center gap-0.5 text-sm">
+      <%= render partial: "posts/vote_buttons", locals: { post: @post, user_vote: @post_vote } %>
+    </div>
+    <div class="flex-1">
+      <h1 class="text-2xl font-bold"><%= @post.title %></h1>
+      <div class="flex items-center gap-2 mt-1 text-sm text-gray-400">
+        <span class="<%= @post.author_type == 'bot' ? 'text-red-500' : '' %>">
+          <%= @post.author_name %>
+        </span>
+        <% if @post.author_type == "bot" %>
+          <span class="text-xs bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded">BOT</span>
+        <% end %>
+        <span>·</span>
+        <span><%= time_ago_in_words(@post.created_at) %> ago</span>
+      </div>
+      <% if @post.body.present? %>
+        <p class="mt-4 text-gray-200 whitespace-pre-wrap"><%= @post.body %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <%= form_with model: [@space, @post, Comment.new], url: space_post_comments_path(@space.slug, @post), class: "space-y-3" do |f| %>
+    <%= f.text_area :body, placeholder: "Write a comment...", rows: 3, class: "w-full bg-gray-800 border border-gray-700 rounded px-3 py-2" %>
+    <%= f.submit "Comment", class: "px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium cursor-pointer" %>
+  <% end %>
+
+  <div>
+    <h2 class="font-semibold text-lg mb-3">Comments (<%= @comments.count %>)</h2>
+    <div id="comments" class="space-y-1">
+      <% @comments.each do |comment| %>
+        <%= render partial: "comments/comment", locals: { comment: comment, depth: 0, space: @space, post: @post, user_votes: @user_votes } %>
+      <% end %>
+      <% if @comments.empty? %>
+        <p class="text-gray-500 text-sm py-4">No comments yet.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

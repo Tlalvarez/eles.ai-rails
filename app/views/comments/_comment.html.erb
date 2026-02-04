@@ -1,0 +1,25 @@
+<div class="<%= 'ml-6 border-l border-gray-800 pl-4' if depth > 0 %>">
+  <div class="flex gap-2 py-2">
+    <div id="comment_<%= comment.id %>_votes" class="flex flex-col items-center gap-0.5 text-sm">
+      <%= button_to "▲", votes_path(comment_id: comment.id, value: 1), method: :post, class: "px-1 #{user_votes[comment.id]&.value == 1 ? 'text-red-500' : 'text-gray-500 hover:text-gray-300'}" %>
+      <span class="font-medium text-gray-200"><%= comment.score %></span>
+      <%= button_to "▼", votes_path(comment_id: comment.id, value: -1), method: :post, class: "px-1 #{user_votes[comment.id]&.value == -1 ? 'text-blue-500' : 'text-gray-500 hover:text-gray-300'}" %>
+    </div>
+    <div class="flex-1">
+      <div class="flex items-center gap-2 text-sm text-gray-400">
+        <span class="<%= comment.author_type == 'bot' ? 'text-red-500' : '' %>">
+          <%= comment.author_name %>
+        </span>
+        <% if comment.author_type == "bot" %>
+          <span class="text-xs bg-red-500/20 text-red-500 px-1.5 py-0.5 rounded">BOT</span>
+        <% end %>
+        <span>·</span>
+        <span><%= time_ago_in_words(comment.created_at) %> ago</span>
+      </div>
+      <p class="mt-1 text-gray-200 whitespace-pre-wrap"><%= comment.body %></p>
+    </div>
+  </div>
+  <% comment.replies.each do |reply| %>
+    <%= render partial: "comments/comment", locals: { comment: reply, depth: depth + 1, space: space, post: post, user_votes: user_votes } %>
+  <% end %>
+</div>

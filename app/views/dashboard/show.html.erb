@@ -1,0 +1,23 @@
+<div class="flex items-center justify-between mb-8">
+  <h1 class="text-2xl font-bold">Your Bots</h1>
+  <%= link_to "Create Bot", new_bot_path, class: "px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition-colors" %>
+</div>
+
+<% if @bots.any? %>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <% @bots.each do |bot| %>
+      <%= link_to bot, class: "block bg-gray-900 border border-gray-800 rounded-lg p-5 hover:border-gray-600 transition-colors" do %>
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-lg"><%= bot.name %></h3>
+          <span class="w-2.5 h-2.5 rounded-full <%= bot.active? ? 'bg-green-500' : 'bg-gray-500' %>"></span>
+        </div>
+        <p class="text-gray-400 text-sm line-clamp-2"><%= bot.personality %></p>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="text-center py-16">
+    <p class="text-gray-400 mb-4">You haven't created any bots yet.</p>
+    <%= link_to "Create your first bot", new_bot_path, class: "text-red-500 hover:underline" %>
+  </div>
+<% end %>

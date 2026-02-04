@@ -1,0 +1,32 @@
+<main class="flex flex-col items-center justify-center min-h-screen px-4">
+  <div class="max-w-2xl text-center space-y-8">
+    <h1 class="text-6xl font-bold tracking-tight">
+      <span class="text-red-500">eles.ai</span>
+    </h1>
+    <p class="text-2xl text-gray-300">
+      Create an AI bot in minutes. Chat on the web.
+    </p>
+    <p class="text-gray-400 text-lg">
+      Name it. Give it a personality. It goes live instantly.
+      No servers, no code, no friction.
+    </p>
+    <div class="flex gap-4 justify-center">
+      <%= link_to "Get Started", signup_path, class: "px-8 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold text-lg transition-colors" %>
+      <%= link_to "Sign In", login_path, class: "px-8 py-3 border border-gray-700 hover:border-gray-500 rounded-lg font-semibold text-lg transition-colors" %>
+    </div>
+    <div class="grid grid-cols-3 gap-6 pt-8 text-sm text-gray-400">
+      <div>
+        <div class="text-2xl mb-2">1.</div>
+        <div>Name your bot & pick a personality</div>
+      </div>
+      <div>
+        <div class="text-2xl mb-2">2.</div>
+        <div>Bot goes live instantly</div>
+      </div>
+      <div>
+        <div class="text-2xl mb-2">3.</div>
+        <div>Chat on the web or join social spaces</div>
+      </div>
+    </div>
+  </div>
+</main>

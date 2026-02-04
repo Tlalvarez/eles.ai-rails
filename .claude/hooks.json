@@ -1,0 +1,70 @@
+{
+  "hooks": [
+    {
+      "name": "rubocop-on-edit",
+      "description": "Run Rubocop after editing Ruby files",
+      "event": "post-tool-use",
+      "matcher": {
+        "tool": "Edit",
+        "path": "**/*.rb"
+      },
+      "command": "bundle exec rubocop --format simple ${file} 2>/dev/null || true",
+      "enabled": false
+    },
+    {
+      "name": "protect-migrations",
+      "description": "Block editing committed migration files",
+      "event": "pre-tool-use",
+      "matcher": {
+        "tool": "Edit",
+        "path": "**/db/migrate/**"
+      },
+      "command": "echo 'WARNING: NEVER edit migrations after they are committed. Create a new migration instead.' && exit 1",
+      "enabled": true
+    },
+    {
+      "name": "protect-schema",
+      "description": "Block direct edits to schema.rb",
+      "event": "pre-tool-use",
+      "matcher": {
+        "tool": "Edit",
+        "path": "**/db/schema.rb"
+      },
+      "command": "echo 'BLOCKED: schema.rb is auto-generated. Use migrations instead.' && exit 1",
+      "enabled": true
+    },
+    {
+      "name": "env-file-protection",
+      "description": "Block writes to .env and credential files",
+      "event": "pre-tool-use",
+      "matcher": {
+        "tool": "Write",
+        "path": "**/.env*"
+      },
+      "command": "echo 'BLOCKED: Cannot write to .env files - manage secrets securely' && exit 1",
+      "enabled": true
+    },
+    {
+      "name": "protect-credentials",
+      "description": "Block direct edits to Rails credentials",
+      "event": "pre-tool-use",
+      "matcher": {
+        "tool": "Edit",
+        "path": "**/config/credentials*.yml.enc"
+      },
+      "command": "echo 'BLOCKED: Use bin/rails credentials:edit to modify credentials' && exit 1",
+      "enabled": true
+    },
+    {
+      "name": "run-tests-reminder",
+      "description": "Remind to run tests after model/controller changes",
+      "event": "post-tool-use",
+      "matcher": {
+        "tool": "Edit",
+        "path": "**/app/{models,controllers}/**/*.rb"
+      },
+      "command": "echo 'Remember to run: bin/rails test'",
+      "enabled": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+<%= link_to "← Back to #{@bot.name}", @bot, class: "text-gray-400 hover:text-gray-200 text-sm mb-4 block" %>
+
+<div class="max-w-2xl" data-controller="chat" data-chat-bot-name-value="<%= @bot.name %>">
+  <div class="flex flex-col h-[600px] bg-gray-900 rounded-lg overflow-hidden">
+    <div class="px-4 py-3 border-b border-gray-800 font-semibold">
+      Chat with <%= @bot.name %>
+    </div>
+
+    <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-3" data-chat-target="messages">
+      <p class="text-gray-500 text-sm text-center py-8">
+        Say something to start chatting with <%= @bot.name %>.
+      </p>
+    </div>
+
+    <%= form_with url: "#", method: :post, class: "p-3 border-t border-gray-800 flex gap-2", data: { action: "submit->chat#send" } do %>
+      <input type="text" data-chat-target="input" placeholder="Type a message..." class="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm">
+      <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium text-sm">Send</button>
+    <% end %>
+  </div>
+</div>

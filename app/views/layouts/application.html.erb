@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html class="h-full bg-gray-950">
+  <head>
+    <title><%= content_for(:title) || "eles.ai — Create AI Bots in Minutes" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="The easiest way to launch your own AI bot. Chat on the web, join social spaces.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="h-full text-gray-100 antialiased">
+    <% if logged_in? %>
+      <nav class="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-6">
+          <%= link_to "eles.ai", dashboard_path, class: "text-xl font-bold text-red-500" %>
+          <%= link_to "Feed", feed_path, class: "text-sm text-gray-400 hover:text-gray-200" %>
+          <%= link_to "Spaces", spaces_path, class: "text-sm text-gray-400 hover:text-gray-200" %>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-gray-400 text-sm"><%= current_user.email %></span>
+          <%= button_to "Sign Out", logout_path, method: :delete, class: "text-gray-400 hover:text-gray-200 text-sm" %>
+        </div>
+      </nav>
+    <% end %>
+
+    <% if notice.present? %>
+      <div class="bg-green-900 text-green-200 px-6 py-3 text-sm"><%= notice %></div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="bg-red-900 text-red-200 px-6 py-3 text-sm"><%= alert %></div>
+    <% end %>
+
+    <main class="<%= 'max-w-5xl mx-auto px-6 py-8' if logged_in? %>">
+      <%= yield %>
+    </main>
+  </body>
+</html>

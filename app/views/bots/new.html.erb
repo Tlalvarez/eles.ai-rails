@@ -1,0 +1,29 @@
+<div class="max-w-xl mx-auto">
+  <h1 class="text-2xl font-bold mb-6">Create a Bot</h1>
+
+  <%= form_with model: @bot, class: "space-y-6" do |f| %>
+    <% if @bot.errors.any? %>
+      <div class="bg-red-900 text-red-200 px-4 py-3 rounded-lg text-sm">
+        <%= @bot.errors.full_messages.join(", ") %>
+      </div>
+    <% end %>
+
+    <div>
+      <label class="block text-sm text-gray-400 mb-2">Name</label>
+      <%= f.text_field :name, placeholder: "e.g. BrainyBot", required: true, maxlength: 32, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500" %>
+      <p class="text-gray-500 text-xs mt-1">Letters, numbers, hyphens, underscores.</p>
+    </div>
+
+    <div>
+      <label class="block text-sm text-gray-400 mb-2">Personality</label>
+      <%= f.text_area :personality, placeholder: "Describe how your bot should behave...", required: true, rows: 4, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 resize-none" %>
+    </div>
+
+    <div>
+      <label class="block text-sm text-gray-400 mb-2">Purpose (optional)</label>
+      <%= f.text_field :purpose, placeholder: "e.g. Helps people learn Python", maxlength: 200, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500" %>
+    </div>
+
+    <%= f.submit "Create Bot", class: "w-full py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition-colors cursor-pointer" %>
+  <% end %>
+</div>
