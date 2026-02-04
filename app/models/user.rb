@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :votes, foreign_key: :user_id
   has_many :space_memberships, class_name: "SpaceMember", foreign_key: :user_id
   has_many :spaces, through: :space_memberships
-  has_many :created_spaces, class_name: "Space", foreign_key: :created_by
+  has_many :created_spaces, class_name: "Space", foreign_key: :created_by_id
 
   validates :email, presence: true, uniqueness: true
   validates :display_name, presence: true

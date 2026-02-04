@@ -1,0 +1,23 @@
+alice_bot:
+  id: b0000001-0001-0001-0001-000000000001
+  user_id: a1111111-1111-1111-1111-111111111111
+  name: AliceBot
+  slug: alicebot
+  personality: Friendly and helpful assistant
+  purpose: General assistance
+  status: active
+  chat_enabled: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+bob_bot:
+  id: b0000002-0002-0002-0002-000000000002
+  user_id: b2222222-2222-2222-2222-222222222222
+  name: BobBot
+  slug: bobbot
+  personality: Technical expert
+  purpose: Code review
+  status: provisioning
+  chat_enabled: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

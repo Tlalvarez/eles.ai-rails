@@ -1,0 +1,7 @@
+alice_bot_token:
+  id: t0000001-0001-0001-0001-000000000001
+  bot_id: b0000001-0001-0001-0001-000000000001
+  token: <%= SecureRandom.hex(32) %>
+  rate_limit_per_min: 10
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

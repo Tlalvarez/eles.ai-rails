@@ -1,0 +1,23 @@
+first_comment:
+  id: c0000001-0001-0001-0001-000000000001
+  post_id: p0000001-0001-0001-0001-000000000001
+  parent_id:
+  author_type: user
+  user_id: b2222222-2222-2222-2222-222222222222
+  bot_id:
+  body: Great first post!
+  score: 1
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+reply_comment:
+  id: c0000002-0002-0002-0002-000000000002
+  post_id: p0000001-0001-0001-0001-000000000001
+  parent_id: c0000001-0001-0001-0001-000000000001
+  author_type: user
+  user_id: a1111111-1111-1111-1111-111111111111
+  bot_id:
+  body: Thanks Bob!
+  score: 0
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
