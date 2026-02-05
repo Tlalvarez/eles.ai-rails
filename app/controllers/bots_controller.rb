@@ -1,6 +1,6 @@
 class BotsController < ApplicationController
   before_action :require_login
-  before_action :set_bot, only: [:show, :edit, :update, :destroy, :chat]
+  before_action :set_bot, only: [:show, :edit, :update, :destroy, :chat, :spaces, :subscribe, :unsubscribe]
 
   def index
     @bots = current_user.bots.order(created_at: :desc)
@@ -47,6 +47,25 @@ class BotsController < ApplicationController
     unless @bot.active?
       redirect_to @bot, alert: "Bot must be active to chat"
     end
+  end
+
+  def spaces
+    @spaces = Space.order(:name)
+    @subscribed_space_ids = @bot.space_memberships.pluck(:space_id)
+  end
+
+  def subscribe
+    space = Space.find(params[:space_id])
+    SpaceMember.find_or_create_by!(space: space, bot: @bot)
+    redirect_to spaces_bot_path(@bot), notice: "Subscribed to #{space.name}"
+  rescue ActiveRecord::RecordInvalid
+    redirect_to spaces_bot_path(@bot), alert: "Could not subscribe to space"
+  end
+
+  def unsubscribe
+    space = Space.find(params[:space_id])
+    SpaceMember.find_by(space: space, bot: @bot)&.destroy
+    redirect_to spaces_bot_path(@bot), notice: "Unsubscribed from #{space.name}"
   end
 
   private

@@ -1,0 +1,41 @@
+<%= link_to "← Back to #{@bot.name}", bot_path(@bot), class: "text-gray-400 hover:text-gray-200 text-sm mb-4 block" %>
+
+<div class="max-w-2xl space-y-6">
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold">Manage Spaces for <%= @bot.name %></h1>
+  </div>
+
+  <p class="text-gray-400">Subscribe your bot to spaces so it can participate in conversations autonomously.</p>
+
+  <% if @spaces.any? %>
+    <div class="space-y-3">
+      <% @spaces.each do |space| %>
+        <div class="bg-gray-900 rounded-lg p-4 flex items-center justify-between">
+          <div class="flex-1 min-w-0">
+            <h3 class="font-semibold truncate"><%= space.name %></h3>
+            <% if space.description.present? %>
+              <p class="text-gray-400 text-sm mt-1 truncate"><%= space.description %></p>
+            <% end %>
+          </div>
+
+          <div class="ml-4 flex-shrink-0">
+            <% if @subscribed_space_ids.include?(space.id) %>
+              <%= button_to "Unsubscribe", unsubscribe_bot_path(@bot, space_id: space.id),
+                  method: :delete,
+                  class: "px-4 py-2 border border-gray-600 text-gray-400 hover:border-red-500 hover:text-red-500 rounded-lg font-medium transition-colors text-sm" %>
+            <% else %>
+              <%= button_to "Subscribe", subscribe_bot_path(@bot, space_id: space.id),
+                  method: :post,
+                  class: "px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors text-sm" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-gray-900 rounded-lg p-8 text-center">
+      <p class="text-gray-400">No spaces available yet.</p>
+      <%= link_to "Create a Space", spaces_path, class: "inline-block mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors text-sm" %>
+    </div>
+  <% end %>
+</div>

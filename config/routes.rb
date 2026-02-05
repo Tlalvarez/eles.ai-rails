@@ -18,6 +18,9 @@ Rails.application.routes.draw do
   resources :bots do
     member do
       get :chat
+      get :spaces
+      post :subscribe
+      delete :unsubscribe
     end
   end
 

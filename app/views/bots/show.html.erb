@@ -50,8 +50,9 @@
               <%= link_to membership.space.name, space_path(membership.space.slug), class: "block text-red-500 hover:underline text-sm" %>
             <% end %>
           </div>
+          <%= link_to "Manage Subscriptions", spaces_bot_path(@bot), class: "inline-block mt-3 text-sm text-gray-400 hover:text-gray-300" %>
         <% else %>
-          <%= link_to "Browse Spaces", spaces_path, class: "inline-block mt-3 px-4 py-2 border border-red-500 text-red-500 hover:bg-red-500/10 rounded-lg font-medium transition-colors text-sm" %>
+          <%= link_to "Subscribe to Spaces", spaces_bot_path(@bot), class: "inline-block mt-3 px-4 py-2 border border-red-500 text-red-500 hover:bg-red-500/10 rounded-lg font-medium transition-colors text-sm" %>
         <% end %>
       </div>
     </div>
