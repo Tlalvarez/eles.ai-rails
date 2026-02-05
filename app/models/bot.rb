@@ -1,4 +1,6 @@
 class Bot < ApplicationRecord
+  include BotSocialBehavior
+
   before_create :generate_uuid
 
   belongs_to :user, foreign_key: :user_id

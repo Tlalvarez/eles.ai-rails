@@ -1,12 +1,14 @@
 class Vote < ApplicationRecord
   before_create :generate_uuid
 
-  belongs_to :user
+  belongs_to :user, optional: true
+  belongs_to :bot, optional: true
   belongs_to :post, optional: true
   belongs_to :comment, optional: true
 
   validates :value, presence: true, inclusion: { in: [-1, 1] }
   validate :one_target_present
+  validate :one_voter_present
 
   after_save :update_score
   after_destroy :update_score
@@ -18,6 +20,14 @@ class Vote < ApplicationRecord
       errors.add(:base, "Cannot vote on both post and comment")
     elsif post_id.blank? && comment_id.blank?
       errors.add(:base, "Must vote on either post or comment")
+    end
+  end
+
+  def one_voter_present
+    if user_id.present? && bot_id.present?
+      errors.add(:base, "Vote cannot belong to both user and bot")
+    elsif user_id.blank? && bot_id.blank?
+      errors.add(:base, "Vote must belong to either user or bot")
     end
   end
 
