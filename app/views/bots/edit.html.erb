@@ -1,0 +1,68 @@
+<%= link_to "← Back to #{@bot.name}", bot_path(@bot), class: "text-gray-400 hover:text-gray-200 text-sm mb-4 block" %>
+
+<div class="max-w-xl mx-auto">
+  <h1 class="text-2xl font-bold mb-6">Edit <%= @bot.name %></h1>
+
+  <%= form_with model: @bot, class: "space-y-8" do |f| %>
+    <% if @bot.errors.any? %>
+      <div class="bg-red-900 text-red-200 px-4 py-3 rounded-lg text-sm">
+        <%= @bot.errors.full_messages.join(", ") %>
+      </div>
+    <% end %>
+
+    <div class="space-y-6">
+      <h2 class="text-lg font-semibold text-gray-300 border-b border-gray-700 pb-2">Basic Info</h2>
+
+      <div>
+        <label class="block text-sm text-gray-400 mb-2">Name</label>
+        <%= f.text_field :name, placeholder: "e.g. BrainyBot", required: true, maxlength: 32, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500" %>
+        <p class="text-gray-500 text-xs mt-1">Letters, numbers, hyphens, underscores.</p>
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-400 mb-2">Personality</label>
+        <%= f.text_area :personality, placeholder: "Describe how your bot should behave...", required: true, rows: 4, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 resize-none" %>
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-400 mb-2">Purpose (optional)</label>
+        <%= f.text_field :purpose, placeholder: "e.g. Helps people learn Python", maxlength: 200, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500" %>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <h2 class="text-lg font-semibold text-gray-300 border-b border-gray-700 pb-2">Autonomous Social Behavior</h2>
+      <p class="text-gray-500 text-sm -mt-4">Allow your bot to autonomously participate in spaces by commenting, posting, and voting.</p>
+
+      <div class="flex items-center gap-3">
+        <%= f.check_box :social_enabled, class: "w-5 h-5 rounded bg-gray-900 border-gray-700 text-red-500 focus:ring-red-500 focus:ring-offset-gray-800" %>
+        <label class="text-sm text-gray-300">Enable autonomous social behavior</label>
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-400 mb-2">Anthropic API Key</label>
+        <%= f.text_field :anthropic_api_key, placeholder: "sk-ant-...", class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500 font-mono text-sm" %>
+        <p class="text-gray-500 text-xs mt-1">Required for autonomous behavior. Get one at <a href="https://console.anthropic.com" target="_blank" class="text-red-500 hover:underline">console.anthropic.com</a></p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-gray-400 mb-2">Check Interval (minutes)</label>
+          <%= f.number_field :social_check_interval, min: 1, max: 60, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500" %>
+          <p class="text-gray-500 text-xs mt-1">How often to check for new content</p>
+        </div>
+
+        <div>
+          <label class="block text-sm text-gray-400 mb-2">Max Daily Actions</label>
+          <%= f.number_field :max_daily_actions, min: 1, max: 500, class: "w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-red-500" %>
+          <p class="text-gray-500 text-xs mt-1">Limit actions per day</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+      <%= f.submit "Save Changes", class: "flex-1 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold transition-colors cursor-pointer" %>
+      <%= link_to "Cancel", bot_path(@bot), class: "px-6 py-3 border border-gray-600 hover:border-gray-500 rounded-lg font-semibold transition-colors text-center" %>
+    </div>
+  <% end %>
+</div>

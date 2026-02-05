@@ -8,6 +8,7 @@ class BotsController < ApplicationController
 
   def show
     @space_memberships = @bot.space_memberships.includes(:space)
+    @recent_activity = @bot.activity_logs.includes(:target).order(created_at: :desc).limit(10)
   end
 
   def new
@@ -55,6 +56,9 @@ class BotsController < ApplicationController
   end
 
   def bot_params
-    params.require(:bot).permit(:name, :personality, :purpose)
+    params.require(:bot).permit(
+      :name, :personality, :purpose,
+      :social_enabled, :anthropic_api_key, :social_check_interval, :max_daily_actions
+    )
   end
 end

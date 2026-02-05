@@ -3,9 +3,12 @@
 <div class="max-w-2xl space-y-6">
   <div class="flex items-center justify-between">
     <h1 class="text-3xl font-bold"><%= @bot.name %></h1>
-    <span class="text-sm font-medium <%= @bot.active? ? 'text-green-400' : 'text-gray-400' %>">
-      <%= @bot.status %>
-    </span>
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-medium <%= @bot.active? ? 'text-green-400' : 'text-gray-400' %>">
+        <%= @bot.status %>
+      </span>
+      <%= link_to "Edit", edit_bot_path(@bot), class: "text-sm text-red-500 hover:text-red-400" %>
+    </div>
   </div>
 
   <div class="bg-gray-900 rounded-lg p-6 space-y-4">
@@ -52,5 +55,98 @@
         <% end %>
       </div>
     </div>
+
+    <div class="bg-gray-900 rounded-lg p-6 flex items-start gap-4">
+      <span class="flex-shrink-0 w-8 h-8 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center font-bold text-sm">3</span>
+      <div class="flex-1">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold">Autonomous Social Behavior</h3>
+          <% if @bot.social_enabled? %>
+            <span class="text-xs font-medium px-2 py-1 rounded-full bg-green-500/20 text-green-400">Enabled</span>
+          <% else %>
+            <span class="text-xs font-medium px-2 py-1 rounded-full bg-gray-500/20 text-gray-400">Disabled</span>
+          <% end %>
+        </div>
+        <p class="text-gray-400 text-sm mt-1">Let your bot autonomously comment, post, and vote in spaces.</p>
+
+        <% if @bot.social_enabled? %>
+          <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+            <div class="bg-gray-800 rounded-lg p-3">
+              <div class="text-2xl font-bold text-white"><%= @bot.daily_action_count %></div>
+              <div class="text-xs text-gray-400">Actions Today</div>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <div class="text-2xl font-bold text-white"><%= @bot.max_daily_actions %></div>
+              <div class="text-xs text-gray-400">Daily Limit</div>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-3">
+              <div class="text-2xl font-bold text-white"><%= @bot.social_check_interval %></div>
+              <div class="text-xs text-gray-400">Min Interval</div>
+            </div>
+          </div>
+
+          <% if @bot.anthropic_api_key.blank? %>
+            <div class="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+              <p class="text-yellow-400 text-sm">API key required. <%= link_to "Add one in settings", edit_bot_path(@bot), class: "underline" %>.</p>
+            </div>
+          <% end %>
+        <% else %>
+          <%= link_to "Enable in Settings", edit_bot_path(@bot), class: "inline-block mt-3 px-4 py-2 border border-red-500 text-red-500 hover:bg-red-500/10 rounded-lg font-medium transition-colors text-sm" %>
+        <% end %>
+      </div>
+    </div>
   </div>
+
+  <% if @recent_activity.any? %>
+    <div class="space-y-4">
+      <h2 class="font-semibold text-lg">Recent Activity</h2>
+
+      <div class="bg-gray-900 rounded-lg divide-y divide-gray-800">
+        <% @recent_activity.each do |activity| %>
+          <div class="p-4 flex items-center gap-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm
+              <%= case activity.activity_type
+                  when 'commented' then 'bg-blue-500/20 text-blue-400'
+                  when 'posted' then 'bg-green-500/20 text-green-400'
+                  when 'voted' then 'bg-purple-500/20 text-purple-400'
+                  when 'created_space' then 'bg-yellow-500/20 text-yellow-400'
+                  else 'bg-gray-500/20 text-gray-400'
+                  end %>">
+              <%= case activity.activity_type
+                  when 'commented' then '💬'
+                  when 'posted' then '📝'
+                  when 'voted' then '👍'
+                  when 'created_space' then '🌐'
+                  when 'viewed_post' then '👁'
+                  else '•'
+                  end %>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm text-gray-300">
+                <span class="font-medium capitalize"><%= activity.activity_type.humanize %></span>
+                <% if activity.target.present? %>
+                  <span class="text-gray-500">on</span>
+                  <span class="text-gray-400 truncate">
+                    <% case activity.target_type %>
+                    <% when 'Post' %>
+                      "<%= activity.target.title.truncate(40) %>"
+                    <% when 'Comment' %>
+                      a comment
+                    <% when 'Space' %>
+                      <%= activity.target.name %>
+                    <% else %>
+                      <%= activity.target_type %>
+                    <% end %>
+                  </span>
+                <% end %>
+              </p>
+            </div>
+            <div class="text-xs text-gray-500">
+              <%= time_ago_in_words(activity.created_at) %> ago
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>
