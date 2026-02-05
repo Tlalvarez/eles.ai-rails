@@ -22,7 +22,7 @@ class ClaudeApiService < ApplicationService
 
     content = response.content.first.text
     Result.new(success?: true, content: content)
-  rescue Anthropic::Error => e
+  rescue Anthropic::Errors::Error => e
     Result.new(success?: false, error: e.message)
   rescue StandardError => e
     Result.new(success?: false, error: "Unexpected error: #{e.message}")
